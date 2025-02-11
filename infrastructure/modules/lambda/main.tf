@@ -11,12 +11,8 @@ resource "aws_lambda_function" "my_lambda" {
   }
 }
 
-# resource "aws_lambda_function_url" "function_url" {
-#   function_name      = aws_lambda_function.my_lambda.function_name
-#   authorization_type = "NONE"  # or "AWS_IAM" for authenticated access
-# }
 
-# Create API Gateway
+# Creating API Gateway
 resource "aws_apigatewayv2_api" "lambda_api" {
   name          = "lambda-container-api"
   protocol_type = "HTTP"
