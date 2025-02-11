@@ -29,11 +29,11 @@ jobs:
 
       - name: Build Docker image appointment-service
         run: |
-          docker build -t appointment-service-repo ./app/patient-service
-          docker tag appointment-service-repo:latest 084828605119.dkr.ecr.eu-north-1.amazonaws.com/appointment-service-repo:latest
+          docker build -t hellolambda .
+          docker tag hellolambda:latest 084828605119.dkr.ecr.eu-north-1.amazonaws.com/hellolambda:latest
               
           
           
       - name: Push Docker image to ECR
         run: |
-          docker push 084828605119.dkr.ecr.eu-north-1.amazonaws.com/appointment-service-repo:latest
+          docker push 084828605119.dkr.ecr.eu-north-1.amazonaws.com/hellolambda:latest
