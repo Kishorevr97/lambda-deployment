@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "my_lambda" {
   function_name = "hello-world-function"
   role          = var.lambda_role_arn
-  image_uri     = "010928202531.dkr.ecr.us-east-1.amazonaws.com/hackathon/helloworld:latest"
+  image_uri     = "084828605119.dkr.ecr.eu-north-1.amazonaws.com/hellolambda:latest"
   package_type  = "Image"
   # depends_on    = [var.attach_basic_execution]
   environment {
