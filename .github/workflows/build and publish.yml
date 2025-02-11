@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Docker image appointment-service
         run: |
-          docker build -t hellolambda .
+          docker build -t hellolambda .app/hello-world
           docker tag hellolambda:latest 084828605119.dkr.ecr.eu-north-1.amazonaws.com/hellolambda:latest
           
           
