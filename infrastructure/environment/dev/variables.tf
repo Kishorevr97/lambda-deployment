@@ -22,13 +22,7 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b"]
 }
 
-# ------------------------------
-# ECR Variables
-# ------------------------------
-# variable "repo_name" {
-#   description = "ECR repository name"
-#   type        = string
-# }
+
 
 variable "image_url_patient" {
   description = "The URL of the patient service Docker image in ECR"
@@ -43,6 +37,3 @@ variable "image_url" {
 
 }
 
-# ------------------------------
-# Lamds Cluster Variables
-# ------------------------------
