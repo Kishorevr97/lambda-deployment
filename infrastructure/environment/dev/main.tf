@@ -1,18 +1,18 @@
 module "iam" {
-  source = "../../Modules/IAM"
+  source = "../../modules/iam"
   
 }
 
 
 module "ecr" {
-  source    = "../../Modules/ECR"
+  source    = "../../modules/ecr"
  
 }
 
 
 
 module "lamda" {
-  source = "../../Modules/LAMDA"
+  source = "../../modules/lambda"
   lambda_role_arn = module.iam.lambda_role_arn
   attach_basic_execution = module.iam.attach_basic_execution
 }
