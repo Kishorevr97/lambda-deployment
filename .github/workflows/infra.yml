@@ -19,6 +19,8 @@ on:
   pull_request:
     branches:
       - main
+permissions:
+  id-token: write
 
 jobs:
   terraform:
@@ -44,11 +46,12 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.5.0
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v3
       with:
-        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+        role-to-assume: arn:aws:iam::084828605119:role/github-actions-openid-kish
+        role-session-name: githubopenid
         aws-region: eu-north-1
 
     - name: Initialize Terraform
