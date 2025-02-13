@@ -6,6 +6,7 @@ module "iam" {
 
 module "ecr" {
   source    = "../../modules/ecr"
+  ecr_repository_url = module.ecr.ecr_repository_url
 
  
 }
