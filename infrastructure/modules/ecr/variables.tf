@@ -3,3 +3,9 @@ variable "repo_name" {
   type        = string
   default     = "my-sso-repo"
 }
+
+variable "ecr_repository_url" {
+  description = "ECR repository url"
+  type        = string
+}
+
