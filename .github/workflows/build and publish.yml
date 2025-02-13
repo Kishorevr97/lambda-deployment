@@ -5,7 +5,8 @@ on:
   # push:
   #   branches:
   #     - main  # Change to your deployment branch
-
+permissions:
+  id-token: write
 jobs:
   build-and-push:
     name: Build & Push Docker Image to ECR
