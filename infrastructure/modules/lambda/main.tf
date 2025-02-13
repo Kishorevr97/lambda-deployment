@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "my_lambda" {
   function_name = "hello-world-function"
   role          = var.lambda_role_arn
-  image_uri     = var.ecr_repository_url:latest
+  image_uri     = ["${var.ecr_repository_url:latest}"]
   package_type  = "Image"
  
   environment {
