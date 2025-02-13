@@ -48,9 +48,9 @@ jobs:
         terraform_version: 1.5.0
 
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v3
+      uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
       with:
-        role-to-assume: arn:aws:iam::084828605119:role/github-actions-openid-kish
+        role-to-assume: arn:aws:iam::084828605119:role/github-actions-openid-kish1
         role-session-name: githubopenid
         aws-region: eu-north-1
 
