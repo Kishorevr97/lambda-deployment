@@ -20,7 +20,8 @@ on:
     branches:
       - main
 permissions:
-  id-token: write 
+  id-token: write
+  contents: read
 
 jobs:
   terraform:
