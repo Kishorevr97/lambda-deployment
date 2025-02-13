@@ -6,7 +6,7 @@ module "iam" {
 
 module "ecr" {
   source    = "../../modules/ecr"
-  ecr_repository_url=aws_ecr_repository.sso_repo.repository_url
+
  
 }
 
