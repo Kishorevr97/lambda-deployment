@@ -12,6 +12,40 @@ resource "aws_lambda_function" "my_lambda" {
 }
 
 
+# Create Cognito User Pool
+resource "aws_cognito_user_pool" "user_pool" {
+  name = "hello-world-user-pool"
+}
+
+# Create Cognito App Client
+resource "aws_cognito_user_pool_client" "user_pool_client" {
+  name = "app-client"
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  generate_secret = false
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows = ["code"]
+  allowed_oauth_scopes = ["openid", "email", "profile"]
+  callback_urls = ["https://your-api-gateway-url/callback"]
+  supported_identity_providers = ["COGNITO"]
+}
+
+
+# Create Cognito JWT Authorizer for API Gateway
+resource "aws_apigatewayv2_authorizer" "cognito_auth" {
+  api_id = aws_apigatewayv2_api.lambda_api.id
+  name   = "CognitoAuth"
+  authorizer_type = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+
+  jwt_configuration {
+    issuer  = "https://cognito-idp.eu-north-1.amazonaws.com/${aws_cognito_user_pool.user_pool.id}"
+    audience = [aws_cognito_user_pool_client.user_pool_client.id]
+  }
+}
+
+
+
+
 # Creating API Gateway
 resource "aws_apigatewayv2_api" "lambda_api" {
   name          = "lambda-container-api"
@@ -46,6 +80,8 @@ resource "aws_apigatewayv2_route" "lambda_route" {
   api_id = aws_apigatewayv2_api.lambda_api.id
   route_key = "ANY /{proxy+}"  # Catches all paths
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.cognito_auth.id
 }
 # Allow API Gateway to invoke Lambda
 resource "aws_lambda_permission" "api_gw" {
