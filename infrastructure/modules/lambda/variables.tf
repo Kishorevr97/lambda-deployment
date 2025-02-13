@@ -11,3 +11,8 @@ variable "lambda_role_arn" {
 
 variable "attach_basic_execution" {
 }
+
+variable "ecr_repository_url" {
+   description = "ecr repository url"
+   type        = string
+}
