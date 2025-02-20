@@ -48,20 +48,19 @@ jobs:
       with:
         terraform_version: 1.5.0
 
-    # - name: configure aws credentials
-    #   uses: aws-actions/configure-aws-credentials@v3
-    #   with:
-    #     role-to-assume: arn:aws:iam::084828605119:role/github-deployment-kish
-    #     role-session-name: samplerolesession
-    #     aws-region: eu-north-1
-    #     audience: sts.amazonaws.com
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v3
       with:
-        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.SECRET_KEY }}
-        aws-region: eu-north-1
+        role-to-assume: arn:aws:iam::084828605119:role/github-deployment-kish
+        role-session-name: samplerolesession
+        aws-region: "eu-north-1"
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+    #     aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+    #     aws-region: eu-north-1
 
     - name: Initialize Terraform
       run: |
