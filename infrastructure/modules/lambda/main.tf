@@ -25,7 +25,7 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows = ["code"]
   allowed_oauth_scopes = ["openid", "email", "profile"]
-  callback_urls = ["${aws_apigatewayv2_api.lambda_api.api_endpoint}/callback"]
+  callback_urls = ["${aws_apigatewayv2_api.lambda_api.api_endpoint}/prod"]
   supported_identity_providers = ["COGNITO"]
 }
 
