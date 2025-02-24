@@ -13,9 +13,9 @@ on:
             - staging
             - prod
           
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - SSO
   pull_request:
     branches:
       - SSO
