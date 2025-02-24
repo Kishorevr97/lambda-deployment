@@ -93,14 +93,35 @@ jobs:
     #      git commit -m "Add .terraform files to Git LFS"
     #      git push origin main
 
-    - name: Install Terraform Docs
-      if: github.event_name == 'pull_request'
+    # - name: Install Terraform Docs
+    #   if: github.event_name == 'pull_request'
+    #   uses: terraform-docs/gh-actions@v1.3.0
+    #   with:
+    #       working-dir: .
+    #       output-file: README.md
+    #       output-method: inject
+    #       git-push: "true"
+    - name: Generate Markdown with Terraform Docs
+      if: ${{ github.event_name == 'pull_request' }}
       uses: terraform-docs/gh-actions@v1.3.0
       with:
-          working-dir: .
+          working-dir: ./infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: true
+          config-file: .terraform-docs.yml
+
+       # Add README.md to PR Comment using Sticky Comment
+    - name: Post README.md as PR Comment
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: marocchino/sticky-pull-request-comment@v2.9.0
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          header: "Terraform Documentation "
+          path: "./infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}/README.md"
+    
+
+      
 
     - name: Terraform Apply 
       if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
