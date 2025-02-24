@@ -82,7 +82,7 @@ jobs:
 
     - name: Generate Terraform Plan
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
         terraform plan '-var-file=${{github.event.inputs.environment || 'dev' }}.tfvars' -out=tfplan
 
     # - name: install lfs
