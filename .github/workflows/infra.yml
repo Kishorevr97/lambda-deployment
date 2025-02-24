@@ -64,7 +64,7 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
         terraform init
 
     - name: Install & Configure TFLint
@@ -126,5 +126,5 @@ jobs:
     - name: Terraform Apply 
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
-        terraform apply '-var-file=${{ github.event.inputs.environment }}.tfvars' -auto-approve
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
+        terraform apply '-var-file=${{ github.event.inputs.environment || 'dev' }}.tfvars' -auto-approve
