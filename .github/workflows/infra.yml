@@ -13,15 +13,16 @@ on:
             - staging
             - prod
           
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - SSO
   pull_request:
     branches:
       - SSO
 permissions:
   id-token: write
   contents: read
+  pull-requests: write
 
 jobs:
   terraform:
@@ -64,7 +65,7 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
         terraform init
 
     - name: Install & Configure TFLint
@@ -77,13 +78,22 @@ jobs:
         tflint
       continue-on-error: true
 
-    - name: Select Workspace
-      run: terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
+    # - name: Select Workspace
+    #   run: terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
 
     - name: Generate Terraform Plan
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
-        terraform plan '-var-file=${{ github.event.inputs.environment }}.tfvars' -out=tfplan
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
+        terraform plan '-var-file=${{github.event.inputs.environment || 'dev' }}.tfvars' -out=tfplan
+
+     # Step: Checkout Repository for PR
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }} 
+          token: ${{ secrets.TOKEN }}
+        
 
     # - name: install lfs
     #   run: |
@@ -124,7 +134,7 @@ jobs:
       
 
     - name: Terraform Apply 
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/SSO' }}
       run: |
-        cd infrastructure/environment/${{ github.event.inputs.environment }}
-        terraform apply '-var-file=${{ github.event.inputs.environment }}.tfvars' -auto-approve
+        cd infrastructure/environment/${{ github.event.inputs.environment || 'dev' }}
+        terraform apply '-var-file=${{ github.event.inputs.environment || 'dev' }}.tfvars' -auto-approve
